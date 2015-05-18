@@ -1,0 +1,2 @@
+# kindofmagic
+INotifyPropertyChanged MSBuild Task 

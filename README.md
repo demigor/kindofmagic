@@ -15,7 +15,7 @@ In comparison to similar projects, KindOfMagic:
 * needs no extra references. 
 * can be used with and without your base class. 
 * has fire-and-forget mode - with base class developer can apply attributes only once and all derived classes (including those from another assemblies) will get transformed. 
-* supports WinRT C# Metro Apps, Silverlight as well as .NET FX (client and extended profiles)
+* supports Universal Windows Platform (UWP) Apps, Silverlight as well as .NET FX (client and extended profiles)
 
 Fastest way to get in touch: http://twitter.com/demigor
 
@@ -81,8 +81,8 @@ That's exactly what Kind Of Magic does! No more, no less.
 1. Define somewhere in your project MagicAttribute and NoMagicAttribute (optional) class, derived from Attribute. Neither visibility nor namespace are relevant. Here is an example, just two lines of code:
 
 
-	class MagicAttribute: Attribute { }
-	class NoMagicAttribute: Attribute { }
+    class MagicAttribute: Attribute { }
+    class NoMagicAttribute: Attribute { }
 
 
 2. Apply Magic attribute to public properties in your ViewModel classes, implementing INotifyPropertyChanged. Your class must have accessible void RaisePropertyChanged(string) method. 

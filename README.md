@@ -1,16 +1,16 @@
 ##Project Description
-MSBuild task to simplify implementation of INotifyPropertyChanged interface for WinRT, Silverlight 2.0+, .NET 2.0+, Windows Phone 7+, Portable Class Libraries, Universal Windows Platform. Distributed via Nuget.
+MSBuild task to simplify implementation of INotifyPropertyChanged interface for Universal Windows Platform, WinRT, Silverlight 2.0+, .NET 2.0+, Windows Phone 7+, Portable Class Libraries. Distributed via Nuget.
 
 During compile time it injects supporting code in property setters: raising PropertyChanged event when value changed. 
 
 In comparison to similar projects, KindOfMagic:
 
-* provides developer with the best control what properties and classes get transformed. 
+* provides developer with the best control which properties and classes get transformed. 
 * injects no complex heuristics which could make your application behave weird. 
 * is easy to use and understand. 
 * does only what is indeed expected and needed from developer. 
 * can be used in build environments. 
-* distributed as Nuget package
+* distributed as Nuget package.
 * needs only 2 Attributes to control its logic, which developer can define in own code. 
 * needs no extra references. 
 * can be used with and without your base class. 

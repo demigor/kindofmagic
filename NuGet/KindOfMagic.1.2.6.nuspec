@@ -5,7 +5,7 @@
         <version>1.2.6</version>
         <title>Kind Of Magic</title>
         <authors>Lex Lavnikov</authors>
-        <projectUrl>http://kindofmagic.codeplex.com</projectUrl>
+        <projectUrl>http://github.com/demigor/kindofmagic</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>MSBuild task to simplify implementation of INotifyPropertyChanged interface for WinRT, Silverlight 2+, .NET 2.0+, Windows Phone 7+, Portable Class Libraries.
 

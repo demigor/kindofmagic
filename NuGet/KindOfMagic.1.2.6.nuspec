@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>KindOfMagic</id>
+        <version>1.2.6</version>
+        <title>Kind Of Magic</title>
+        <authors>Lex Lavnikov</authors>
+        <projectUrl>http://kindofmagic.codeplex.com</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>MSBuild task to simplify implementation of INotifyPropertyChanged interface for WinRT, Silverlight 2+, .NET 2.0+, Windows Phone 7+, Portable Class Libraries.
+
+During compile time it injects supporting code in property setters: raising PropertyChanged event when value changed.</description>
+        <summary>Effortless INotifyPropertyChanged for .NET, WinRT, Windows Phone, Silverlight and Portable Class Libraries.</summary>
+        <copyright>Lex Lavnikov</copyright>
+        <language>en</language>
+        <tags>INotifyPropertyChanged, MSBuild</tags>
+    </metadata>
+    <files>
+        <file src="..\KindOfMagic\bin\Release\KindOfMagic.exe" target="build\KindOfMagic.exe" />
+        <file src="..\KindOfMagic\bin\Release\KindOfMagic.targets" target="build\KindOfMagic.targets" />
+        <file src="..\KindOfMagic\refbin\Mono.Cecil.dll" target="build\Mono.Cecil.dll" />
+        <file src="..\KindOfMagic\refbin\Mono.Cecil.Pdb.dll" target="build\Mono.Cecil.Pdb.dll" />
+        <file src="..\KindOfMagic\refbin\Mono.Cecil.Rocks.dll" target="build\Mono.Cecil.Rocks.dll" />
+        <file src="src\PropertyChangedBase.cs" target="src\PropertyChangedBase.cs" />
+        <file src="tools\licence.txt" target="licence.txt" />
+    </files>
+</package>

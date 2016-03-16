@@ -272,10 +272,8 @@ namespace KindOfMagic
         var assemblyLevel = _module.Assembly.CustomAttributes.ContainsAttributeFrom(_magic);
 
         // making a list of classes to process
-        var jobs = (from type in _module.Types
-                      // only classes
-                    where type.IsClass
-                    // which have proper Raise method
+        var jobs = (from type in GetClasses(_module.Types)
+                      // which have proper Raise method
                     let raise = FindRaiseMethodOf(type, inpc)
                     where raise != null
                     // select job related data
@@ -306,6 +304,18 @@ namespace KindOfMagic
       }
 
       return processed > 0 ? MagicResult.MagicApplied : MagicResult.NoMagicNeeded;
+    }
+
+    IEnumerable<TypeDefinition> GetClasses(IEnumerable<TypeDefinition> types)
+    {
+      foreach (var i in types)
+        if (i.IsClass)
+        {
+          yield return i;
+
+          foreach (var j in GetClasses(i.NestedTypes))
+            yield return j;
+        }
     }
 
     MethodDefinition FindRaiseMethodOf(TypeDefinition type, string intf)

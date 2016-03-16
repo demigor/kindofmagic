@@ -129,14 +129,16 @@ namespace KindOfMagic
       }
     }
 
+    const string T_GeneratedCodeAttribute = "System.CodeDom.Compiler.GeneratedCodeAttribute";
+    const string T_AssemblyMetadataAttribute = "System.Reflection.AssemblyMetadataAttribute";
+
     /// <summary>
     /// Checks main module for label attribute
     /// </summary>
     /// <returns></returns>
     bool GetAlreadyProcessed()
     {
-      var cga = typeof(GeneratedCodeAttribute).FullName;
-      return _module.CustomAttributes.Any(i => i.AttributeType.FullName == cga && i.HasConstructorArguments && Convert.ToString(i.ConstructorArguments[0].Value) == "KindOfMagic");
+      return _module.CustomAttributes.Any(i => (i.AttributeType.FullName == T_GeneratedCodeAttribute || i.AttributeType.FullName == T_AssemblyMetadataAttribute) && i.HasConstructorArguments && Convert.ToString(i.ConstructorArguments[0].Value) == "KindOfMagic");
     }
 
     /// <summary>
@@ -152,10 +154,21 @@ namespace KindOfMagic
     /// </summary>
     CustomAttribute CreateLabel()
     {
+      var winRT = _module.AssemblyReferences.Any(i => i.Name == "Windows"); // winrt
+
       var stringType = _module.TypeSystem.String;
-      var system = GetSystem();
-      var baseAttr = system.MainModule.GetType("System.CodeDom.Compiler.GeneratedCodeAttribute");
-      var baseCtor = _module.Import(baseAttr.Methods.First(m => m.IsConstructor && m.Parameters.Count == 2));
+      var system = GetAssemblyRef(winRT ? "mscorlib" : "System");
+      var codeAttr = winRT ? T_AssemblyMetadataAttribute : T_GeneratedCodeAttribute;
+
+      var baseAttr = system.MainModule.GetType(codeAttr);
+      if (baseAttr == null)
+      {
+        var attr = system.MainModule.ExportedTypes.Single(i => i.FullName == codeAttr);
+        baseAttr = attr.Resolve();
+      }
+
+      var ctor = baseAttr.Methods.First(m => m.IsConstructor && m.Parameters.Count == 2);
+      var baseCtor = _module.ImportReference(ctor);
 
       var result = new CustomAttribute(baseCtor);
 
@@ -165,20 +178,21 @@ namespace KindOfMagic
       return result;
     }
 
-    AssemblyDefinition GetSystem()
+
+    AssemblyDefinition GetAssemblyRef(string name)
     {
-      var corlib = (AssemblyNameReference)_module.TypeSystem.Corlib;
+      var corlib = (AssemblyNameReference)_module.TypeSystem.CoreLibrary;
 
       // Workaround to get System.dll
       if (corlib.PublicKeyToken[0] != 124) // public key differs for SL & NETFX
-        return _resolver.Resolve("System");
+        return _resolver.Resolve(name);
 
-      return _resolver.Resolve(new AssemblyNameReference("System", corlib.Version) { PublicKeyToken = corlib.PublicKeyToken });
+      return _resolver.Resolve(new AssemblyNameReference(name, corlib.Version) { PublicKeyToken = corlib.PublicKeyToken });
     }
 
     #endregion
 
-    static readonly string[] _ignores = new[] { "mscorlib,", "System,", "System.", "Microsoft.", "DevExpress.", "Windows," };
+    static readonly string[] _ignores = new[] { "mscorlib,", "System,", "System.", "Microsoft.", "DevExpress.", "Windows,", "WindowsBase,", "PresentationCore,", "PresentationFramework,", };
 
     /// <summary>
     /// Small filter method to discard not interesting assemblies. By default System, MS & DevEx.
@@ -271,7 +285,7 @@ namespace KindOfMagic
         var tasks = from job in jobs
                     from prop in job.Type.Properties
                       // must have public getter and any setter
-                    where prop.GetMethod != null && !prop.GetMethod.IsStatic && prop.GetMethod.IsPublic && prop.SetMethod != null 
+                    where prop.GetMethod != null && !prop.GetMethod.IsStatic && prop.GetMethod.IsPublic && prop.SetMethod != null
                     // must not have NoMagic attribute applied
                     where !prop.CustomAttributes.ContainsAttributeFrom(_noMagic)
                     // must have assembly, class or property level Magic attribute applied
@@ -626,7 +640,7 @@ namespace KindOfMagic
 
     static TypeDefinition Resolve(TypeReference reference, bool includeSystem = true)
     {
-      if (!includeSystem && reference != null && reference.FullName.StartsWith("System."))
+      if (!includeSystem && reference != null && (reference.FullName.StartsWith("System.") || reference.FullName.StartsWith("Windows.")))
         return null;
 
       return reference != null ? reference.Resolve() : null;

@@ -207,7 +207,7 @@ namespace KindOfMagic
         var assembly = AssemblyDefinition.ReadAssembly(file, parameters);
 
         // Silverlight Assembly
-        var corlib = (AssemblyNameReference)assembly.MainModule.TypeSystem.Corlib;
+        var corlib = (AssemblyNameReference)assembly.MainModule.TypeSystem.CoreLibrary;
         if (corlib.PublicKeyToken[0] == 124 && !resolver.NoGAC)
           resolver.AddSilverlightDirectories(corlib.Version.Major);
 

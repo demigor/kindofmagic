@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>KindOfMagic</id>
-        <version>1.2.6</version>
+        <version>1.3.0</version>
         <title>Kind Of Magic</title>
         <authors>Lex Lavnikov</authors>
         <projectUrl>http://github.com/demigor/kindofmagic</projectUrl>
@@ -11,6 +11,7 @@
 
 During compile time it injects supporting code in property setters: raising PropertyChanged event when value changed.</description>
         <summary>Effortless INotifyPropertyChanged for .NET, WinRT, Windows Phone, Silverlight and Portable Class Libraries.</summary>
+        <releaseNotes>1.3.0 WinRT/UWP fixes</releaseNotes>
         <copyright>Lex Lavnikov</copyright>
         <language>en</language>
         <tags>INotifyPropertyChanged, MSBuild</tags>
